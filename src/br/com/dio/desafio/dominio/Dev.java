@@ -2,19 +2,23 @@ package br.com.dio.desafio.dominio;
 
 import java.util.*;
 
+/**
+ * Representa um desenvolvedor inscrito no Bootcamp.
+ * O Dev possui uma lista de conteúdos inscritos e concluídos, e um método para calcular o XP total.
+ */
 public class Dev {
     private String nome;
     private Set<Conteudo> conteudosInscritos = new LinkedHashSet<>();
     private Set<Conteudo> conteudosConcluidos = new LinkedHashSet<>();
 
-    public void inscreverBootcamp(Bootcamp bootcamp){
+    public void inscreverBootcamp(Bootcamp bootcamp) {
         this.conteudosInscritos.addAll(bootcamp.getConteudos());
         bootcamp.getDevsInscritos().add(this);
     }
 
     public void progredir() {
         Optional<Conteudo> conteudo = this.conteudosInscritos.stream().findFirst();
-        if(conteudo.isPresent()) {
+        if (conteudo.isPresent()) {
             this.conteudosConcluidos.add(conteudo.get());
             this.conteudosInscritos.remove(conteudo.get());
         } else {
@@ -23,21 +27,21 @@ public class Dev {
     }
 
     public double calcularTotalXp() {
-        Iterator<Conteudo> iterator = this.conteudosConcluidos.iterator();
         double soma = 0;
-        while(iterator.hasNext()){
-            double next = iterator.next().calcularXp();
-            soma += next;
+        for (Conteudo conteudo : conteudosConcluidos) {
+            soma += conteudo.calcularXp();
         }
         return soma;
-
-        /*return this.conteudosConcluidos
-                .stream()
-                .mapToDouble(Conteudo::calcularXp)
-                .sum();*/
     }
 
+    public void mostrarProgresso() {
+        System.out.println("Nome: " + nome);
+        System.out.println("Conteúdos Inscritos: " + conteudosInscritos);
+        System.out.println("Conteúdos Concluídos: " + conteudosConcluidos);
+        System.out.println("XP Total: " + calcularTotalXp());
+    }
 
+    // Getters e Setters
     public String getNome() {
         return nome;
     }
@@ -60,18 +64,5 @@ public class Dev {
 
     public void setConteudosConcluidos(Set<Conteudo> conteudosConcluidos) {
         this.conteudosConcluidos = conteudosConcluidos;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Dev dev = (Dev) o;
-        return Objects.equals(nome, dev.nome) && Objects.equals(conteudosInscritos, dev.conteudosInscritos) && Objects.equals(conteudosConcluidos, dev.conteudosConcluidos);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(nome, conteudosInscritos, conteudosConcluidos);
     }
 }
