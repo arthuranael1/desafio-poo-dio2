@@ -1,17 +1,22 @@
 package br.com.dio.desafio.dominio;
 
-public class Curso extends Conteudo{
+/**
+ * Representa um Curso dentro do Bootcamp. Cada curso tem uma carga horária e um cálculo específico de XP.
+ */
+public class Curso extends Conteudo {
 
     private int cargaHoraria;
+
+    public Curso(String titulo, String descricao, int cargaHoraria) {
+        this.titulo = titulo;
+        this.descricao = descricao;
+        this.cargaHoraria = cargaHoraria;
+    }
 
     @Override
     public double calcularXp() {
         return XP_PADRAO * cargaHoraria;
     }
-
-    public Curso() {
-    }
-
 
     public int getCargaHoraria() {
         return cargaHoraria;
@@ -24,8 +29,8 @@ public class Curso extends Conteudo{
     @Override
     public String toString() {
         return "Curso{" +
-                "titulo='" + getTitulo() + '\'' +
-                ", descricao='" + getDescricao() + '\'' +
+                "titulo='" + titulo + '\'' +
+                ", descricao='" + descricao + '\'' +
                 ", cargaHoraria=" + cargaHoraria +
                 '}';
     }
